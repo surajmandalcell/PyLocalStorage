@@ -31,6 +31,15 @@ class BasicStorageBackend:
     def remove_item(self, item: str) -> None:
         self.raise_dummy_exception()
 
+    def get_all(self) -> dict:
+        self.raise_dummy_exception()
+
+    def get_many(self, items: list) -> dict:
+        self.raise_dummy_exception()
+
+    def remove_all(self) -> None:
+        self.raise_dummy_exception()
+
     def clear(self) -> None:
         self.raise_dummy_exception()
         
@@ -55,6 +64,24 @@ class TextStorageBackend(BasicStorageBackend):
         else:
             return None
 
+    def get_all(self) -> dict:
+        result = {}
+        if os.path.isdir(self.app_storage_path):
+            for filename in os.listdir(self.app_storage_path):
+                file_path = os.path.join(self.app_storage_path, filename)
+                if os.path.isfile(file_path):
+                    with open(file_path, "r") as item_file:
+                        result[filename] = str(item_file.read())
+        return result
+
+    def get_many(self, items: list) -> dict:
+        result = {}
+        for key in items:
+            value = self.get_item(key)
+            if value is not None:
+                result[key] = value
+        return result
+
     def set_item(self, key: str, value: any) -> None:
         item_path = self.get_file_path(key)
         with open(item_path, "w") as item_file:
@@ -64,6 +91,9 @@ class TextStorageBackend(BasicStorageBackend):
         item_path = self.get_file_path(key)
         if os.path.isfile(item_path):
             os.remove(item_path)
+
+    def remove_all(self) -> None:
+        self.clear()
 
     def clear(self) -> None:
         if os.path.isdir(self.app_storage_path):
@@ -93,6 +123,24 @@ class SQLiteStorageBackend(BasicStorageBackend):
         else:
             return None
 
+    def get_all(self) -> dict:
+        result = {}
+        fetched_values = self.db_cursor.execute("SELECT key, value FROM localStoragePy").fetchall()
+        for key, value in fetched_values:
+            result[key] = value
+        return result
+
+    def get_many(self, items: list) -> dict:
+        result = {}
+        placeholders = ", ".join(["?" for _ in items])
+        if not items:
+            return result
+        query = f"SELECT key, value FROM localStoragePy WHERE key IN ({placeholders})"
+        fetched_values = self.db_cursor.execute(query, items).fetchall()
+        for key, value in fetched_values:
+            result[key] = value
+        return result
+
     def set_item(self, key: str, value: any) -> None:
         if len(self.db_cursor.execute("SELECT key FROM localStoragePy WHERE key = ?", (key,)).fetchall()) == 0:
             self.db_cursor.execute("INSERT INTO localStoragePy (key, value) VALUES (?, ?)", (key, str(value)))
@@ -102,6 +150,10 @@ class SQLiteStorageBackend(BasicStorageBackend):
 
     def remove_item(self, key: str) -> None:
         self.db_cursor.execute("DELETE FROM localStoragePy WHERE key = ?", (key,))
+        self.db_connection.commit()
+
+    def remove_all(self) -> None:
+        self.db_cursor.execute("DELETE FROM localStoragePy")
         self.db_connection.commit()
 
     def clear(self) -> None:
@@ -130,12 +182,27 @@ class JSONStorageBackend(BasicStorageBackend):
             return self.json_data[key]
         return None
 
+    def get_all(self) -> dict:
+        return dict(self.json_data)
+
+    def get_many(self, items: list) -> dict:
+        result = {}
+        for key in items:
+            if key in self.json_data:
+                result[key] = self.json_data[key]
+        return result
+
     def set_item(self, key: str, value: any) -> None:
         self.json_data[key] = str(value)
         self.commit_to_disk()
 
     def remove_item(self, key: str) -> None: 
-        self.json_data.pop(key)
+        if key in self.json_data:
+            self.json_data.pop(key)
+            self.commit_to_disk()
+
+    def remove_all(self) -> None:
+        self.json_data = {}
         self.commit_to_disk()
 
     def clear(self) -> None:

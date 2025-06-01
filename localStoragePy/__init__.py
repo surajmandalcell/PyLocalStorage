@@ -1,7 +1,7 @@
-__author__ = 'jkelol111'
-__copyright__ = 'Copyright (C) 2021-present jkelol111'
+__author__ = 'Suraj Mandal'
+__copyright__ = 'Copyright (C) 2021-present Suraj Mandal'
 __license__ = 'MIT License'
-__version__ = '0.2.3'
+__version__ = '0.3.0'
 
 from .storage_backends import BasicStorageBackend, TextStorageBackend, SQLiteStorageBackend, JSONStorageBackend
 
@@ -25,6 +25,15 @@ class localStoragePy:
 
     def removeItem(self, item: str) -> None:
         self.storage_backend_instance.remove_item(item)
+
+    def getAll(self) -> dict:
+        return self.storage_backend_instance.get_all()
+
+    def getMany(self, items: list) -> dict:
+        return self.storage_backend_instance.get_many(items)
+
+    def removeAll(self) -> None:
+        self.storage_backend_instance.remove_all()
 
     def clear(self):
         self.storage_backend_instance.clear()
