@@ -1,5 +1,5 @@
 """
-Pytest configuration and test utilities for .
+Tests for localStoragePro package.
 """
 
 import sys

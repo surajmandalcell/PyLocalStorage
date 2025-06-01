@@ -1,28 +1,25 @@
 #!/usr/bin/env python3
-"""
-Test script for  demonstrating all functionality.
-This script tests all the methods including get_all, get_many, and remove_all.
-"""
+"""Test script for localStoragePro demonstrating all functionality."""
 
 import json
 import sys
 
-from  import LocalStoragePro
-import  as lsp_module
+from localStoragePro import localStoragePro
+import localStoragePro as lsp_module
 
 def test_basic_operations():
     """Test basic localStorage operations."""
     print("=== Testing Basic Operations ===")
     
-    localStorage = LocalStoragePro('test.basic', 'json')
+    localStorage = localStoragePro('test.basic', 'json')
     
     # Clear any existing data
     localStorage.clear()
     
     # Test setItem and getItem
     localStorage.setItem('username', 'surajmandal')
-    localStorage.setItem('email', 'contact@surajmandal.com')
-    localStorage.setItem('project', '')
+    localStorage.setItem('email', 'localstoragepro.oss@mandalsuraj.com')
+    localStorage.setItem('project', 'localStoragePro')
     
     print(f"Username: {localStorage.getItem('username')}")
     print(f"Email: {localStorage.getItem('email')}")
@@ -42,14 +39,14 @@ def test_bulk_operations():
     """Test bulk operations: getAll, getMany, removeAll."""
     print("=== Testing Bulk Operations ===")
     
-    localStorage = LocalStoragePro('test.bulk', 'sqlite')
+    localStorage = localStoragePro('test.bulk', 'sqlite')
     localStorage.clear()
     
     # Store test data
     test_data = {
         'name': 'Suraj Mandal',
         'github': 'https://github.com/surajmandalcell',
-        'project': '',
+        'project': 'localStoragePro',
         'language': 'Python',
         'version': '0.3.0'
     }
@@ -88,15 +85,15 @@ def test_json_storage():
     """Test storing and retrieving JSON data."""
     print("=== Testing JSON Data Storage ===")
     
-    localStorage = LocalStoragePro('test.json', 'json')
+    localStorage = localStoragePro('test.json', 'json')
     localStorage.clear()
     
     # Store complex data as JSON
     user_profile = {
         'name': 'Suraj Mandal',
-        'email': 'contact@surajmandal.com',
+        'email': 'localstoragepro.oss@mandalsuraj.com',
         'github': 'https://github.com/surajmandalcell',
-        'projects': ['', 'Other Projects'],
+        'projects': ['localStoragePro', 'Other Projects'],
         'skills': ['Python', 'JavaScript', 'Git']
     }
     
@@ -136,7 +133,7 @@ def test_all_backends():
     
     for backend in backends:
         print(f"\n--- Testing {backend.upper()} Backend ---")
-        localStorage = LocalStoragePro(f'test.{backend}', backend)
+        localStorage = localStoragePro(f'test.{backend}', backend)
         localStorage.clear()
         
         # Store test data
@@ -163,7 +160,7 @@ def test_error_handling():
     """Test error handling and edge cases."""
     print("=== Testing Error Handling ===")
     
-    localStorage = LocalStoragePro('test.errors', 'sqlite')
+    localStorage = localStoragePro('test.errors', 'sqlite')
     localStorage.clear()
     
     # Test empty getMany
@@ -191,7 +188,7 @@ def test_error_handling():
 
 def main():
     """Run all tests."""
-    print(" Test Suite")
+    print("localStoragePro Test Suite")
     print("=" * 50)
     print(f"Testing version: {lsp_module.__version__}")
     print(f"Author: {lsp_module.__author__}")
@@ -204,16 +201,14 @@ def main():
         test_all_backends()
         test_error_handling()
         
-        print("🎉 All tests passed successfully!")
-        print("\nLocalStoragePro is ready for use with all the new functionality:")
-        print("  ✓ getAll() - Get all key-value pairs")
-        print("  ✓ getMany(keys) - Get multiple values efficiently")
-        print("  ✓ removeAll() - Remove all stored data")
-        print("  ✓ Comprehensive documentation and examples")
-        print("  ✓ Updated project details for Suraj Mandal")
+        print("All tests passed successfully!")
+        print("\nlocalStoragePro is ready for use with all functionality:")
+        print("  - getAll() - Get all key-value pairs")
+        print("  - getMany(keys) - Get multiple values efficiently")
+        print("  - removeAll() - Remove all stored data")
         
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         import traceback
         traceback.print_exc()
         return 1
