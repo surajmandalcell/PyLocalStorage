@@ -1,323 +1,305 @@
-# LocalStoragePro
-![PyPI](https://img.shields.io/pypi/v/localStoragePy.svg?style=flat-square) ![GitHub issues](https://img.shields.io/github/issues-raw/surajmandalcell/LocalStoragePro.svg?style=flat-square) ![PyPI - License](https://img.shields.io/pypi/l/localStoragePy.svg?style=flat-square)
+# 🗄️ localStoragePro
 
-A familiar API from the Web, adapted to storing data locally with Python. Enhanced with additional functionality for working with multiple keys and values.
+<div align="center">
 
-**Maintained by [Suraj Mandal](https://github.com/surajmandalcell)**
+![PyPI](https://img.shields.io/pypi/v/localStoragePro.svg?style=for-the-badge&logo=pypi&logoColor=white)
+![Python](https://img.shields.io/pypi/pyversions/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
+![License](https://img.shields.io/pypi/l/localStoragePro.svg?style=for-the-badge)
+![Downloads](https://img.shields.io/pypi/dm/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
 
-## Get started
+**A familiar localStorage API from the Web, adapted for Python applications** 🐍
 
-1. Install using PyPi: `$ pip3 install localStoragePy`
+*Simple, fast, and reliable local data storage with multiple backend options*
 
-2. Import into your project: `from localStoragePy import localStoragePy`
+</div>
 
-3. Setup localStorage: `localStorage = localStoragePy('your-app-namespace', 'your-storage-backend')` 
+---
 
-- `your-app-namespace`: whatever you want (example: `com.surajmandal.myapp`) excluding path separators `/ \` or other disallowed characters in file name for your intended platform
+## ✨ Features
 
-- `your-storage-backend`: your preferred storage backend (`sqlite` by default).
-    - Available storage backends:
-        - `text`: text files for each storage item.
-        - `sqlite`: a single database for all storage items.
-        - `json`: a single JSON file for all storage items.
+- 🌐 **Familiar API** - Web localStorage-like interface for Python
+- 🚀 **Multiple Backends** - Choose between SQLite, JSON, or Text storage
+- ⚡ **Bulk Operations** - Efficient `getAll()`, `getMany()`, and `removeAll()` methods
+- 🔒 **Type Safe** - Full type annotations for better IDE support
+- 🧪 **Well Tested** - Comprehensive test coverage across all backends
+- 📦 **Zero Dependencies** - Uses only Python standard library
+- 🔧 **Easy Setup** - Simple namespace-based storage organization
 
-## Usage Examples
+---
 
-### Basic Operations
+## 🚀 Quick Start
 
-```python
-from localStoragePy import localStoragePy
+### Installation
 
-# Initialize with namespace and backend (sqlite is default)
-localStorage = localStoragePy('com.surajmandal.myapp', 'json')
-
-# Store values
-localStorage.setItem('username', 'surajmandal')
-localStorage.setItem('theme', 'dark')
-localStorage.setItem('language', 'en')
-localStorage.setItem('version', '1.0.0')
-
-# Retrieve a single value
-username = localStorage.getItem('username')  # Returns 'surajmandal'
-print(f"Username: {username}")
-
-# Check if item exists (returns None if not found)
-nonexistent = localStorage.getItem('nonexistent')  # Returns None
-if nonexistent is None:
-    print("Item not found")
-
-# Remove a single item
-localStorage.removeItem('theme')
-
-# Clear all stored data
-localStorage.clear()
+```bash
+pip install localStoragePro
 ```
 
-### Advanced Operations - Working with Multiple Items
+### Basic Usage
 
 ```python
-from localStoragePy import localStoragePy
+from localStoragePro import localStoragePro
 
-localStorage = localStoragePy('com.surajmandal.myapp')
+# Initialize with your app namespace
+storage = localStoragePro('com.myapp.data')
 
-# Store multiple values
-localStorage.setItem('user_id', '12345')
-localStorage.setItem('email', 'contact@surajmandal.com')
-localStorage.setItem('first_name', 'Suraj')
-localStorage.setItem('last_name', 'Mandal')
-localStorage.setItem('role', 'developer')
-localStorage.setItem('preferences', '{"notifications": true, "darkMode": true}')
+# Store data (any serializable type)
+storage.setItem('user_id', '12345')
+storage.setItem('theme', 'dark')
+storage.setItem('settings', '{"notifications": true}')
 
-# Get all stored key-value pairs
-all_data = localStorage.getAll()
-print("All stored data:")
-for key, value in all_data.items():
-    print(f"  {key}: {value}")
+# Retrieve data
+user_id = storage.getItem('user_id')  # Returns: '12345'
+theme = storage.getItem('theme')      # Returns: 'dark'
 
-# Get multiple specific values
-user_info = localStorage.getMany(['user_id', 'email', 'first_name', 'last_name'])
-print("\nUser information:")
-for key, value in user_info.items():
-    print(f"  {key}: {value}")
+# Remove items
+storage.removeItem('theme')
+print(storage.getItem('theme'))       # Returns: None
 
-# Get values that may or may not exist
-mixed_keys = localStorage.getMany(['user_id', 'nonexistent_key', 'email'])
-print(f"\nMixed query result: {mixed_keys}")  # Only existing keys are returned
-
-# Remove all stored data (alternative to clear)
-localStorage.removeAll()
-
-# Verify all data is removed
-remaining_data = localStorage.getAll()
-print(f"Remaining data after removeAll(): {remaining_data}")  # Should be empty dict {}
+# Clear all data
+storage.clear()
 ```
+
+---
+
+## 🎯 Storage Backends
+
+Choose the backend that fits your needs:
+
+| Backend | Best For | Pros | Cons |
+|---------|----------|------|------|
+| **`sqlite`** *(default)* | Most applications | Fast, ACID compliant, handles large datasets | Single file dependency |
+| **`json`** | Simple apps, human-readable data | Readable, easy debugging | Can be slower for large datasets |
+| **`text`** | Key-value files | Individual files per key, simple | Many files, slower for bulk operations |
+
+```python
+# Choose your backend
+storage_sqlite = localStoragePro('myapp', 'sqlite')  # Default
+storage_json = localStoragePro('myapp', 'json')      # Human-readable
+storage_text = localStoragePro('myapp', 'text')      # Individual files
+```
+
+---
+
+## ⚡ Bulk Operations
+
+Efficiently work with multiple keys at once:
+
+<details>
+<summary><strong>🔽 Click to see bulk operations examples</strong></summary>
+
+```python
+from localStoragePro import localStoragePro
+
+storage = localStoragePro('bulk_demo')
+
+# Set up some data
+storage.setItem('name', 'Suraj Mandal')
+storage.setItem('email', 'localstoragepro.oss@mandalsuraj.com')
+storage.setItem('role', 'Developer')
+storage.setItem('location', 'India')
+
+# Get all stored data
+all_data = storage.getAll()
+print(all_data)
+# {'name': 'Suraj Mandal', 'email': 'localstoragepro.oss@mandalsuraj.com', 'role': 'Developer', 'location': 'India'}
+
+# Get specific keys only
+user_info = storage.getMany(['name', 'email'])
+print(user_info)
+# {'name': 'Suraj Mandal', 'email': 'localstoragepro.oss@mandalsuraj.com'}
+
+# Remove all data at once
+storage.removeAll()
+print(len(storage.getAll()))  # 0
+```
+
+</details>
+
+---
+
+## 📖 Complete API Reference
+
+<details>
+<summary><strong>🔽 Click to see all available methods</strong></summary>
+
+### Core Methods
+
+| Method | Description | Returns |
+|--------|-------------|---------|
+| `setItem(key, value)` | Store a value with the given key | `None` |
+| `getItem(key)` | Retrieve value by key | `str \| None` |
+| `removeItem(key)` | Remove item by key | `None` |
+| `clear()` | Remove all stored data | `None` |
+
+### Bulk Methods ⚡
+
+| Method | Description | Returns |
+|--------|-------------|---------|
+| `getAll()` | Get all key-value pairs | `Dict[str, str]` |
+| `getMany(keys)` | Get multiple values by keys | `Dict[str, str]` |
+| `removeAll()` | Remove all items (alias for `clear()`) | `None` |
+
+### Type Signatures
+
+```python
+from typing import Dict, List, Optional
+
+def setItem(self, key: str, value: Any) -> None: ...
+def getItem(self, key: str) -> Optional[str]: ...
+def removeItem(self, key: str) -> None: ...
+def getAll(self) -> Dict[str, str]: ...
+def getMany(self, keys: List[str]) -> Dict[str, str]: ...
+def removeAll(self) -> None: ...
+def clear(self) -> None: ...
+```
+
+</details>
+
+---
+
+## 🧪 Examples
 
 ### Working with JSON Data
 
 ```python
 import json
-from localStoragePy import localStoragePy
+from localStoragePro import localStoragePro
 
-localStorage = localStoragePy('com.surajmandal.myapp', 'json')
+storage = localStoragePro('json_example')
 
-# Store complex data as JSON string
-user_settings = {
-    'theme': 'dark',
-    'fontSize': 14,
-    'notifications': True,
-    'shortcuts': ['Ctrl+S', 'Ctrl+C', 'Ctrl+V']
-}
-localStorage.setItem('settings', json.dumps(user_settings))
-
-# Store user profile
+# Store complex data as JSON
 user_profile = {
-    'name': 'Suraj Mandal',
-    'email': 'contact@surajmandal.com',
-    'github': 'https://github.com/surajmandalcell',
-    'projects': ['LocalStoragePro', 'Other Projects']
+    "name": "Suraj Mandal",
+    "preferences": {"theme": "dark", "language": "en"},
+    "projects": ["localStoragePro", "Other Projects"]
 }
-localStorage.setItem('profile', json.dumps(user_profile))
 
-# Retrieve and parse JSON data
-settings_json = localStorage.getItem('settings')
-if settings_json:
-    settings = json.loads(settings_json)
-    print(f"Theme: {settings['theme']}")
-    print(f"Font Size: {settings['fontSize']}")
-    print(f"Notifications: {settings['notifications']}")
+storage.setItem('profile', json.dumps(user_profile))
 
-# Get multiple JSON objects at once
-json_data = localStorage.getMany(['settings', 'profile'])
-for key, value in json_data.items():
-    parsed_data = json.loads(value)
-    print(f"\n{key.title()}:")
-    if isinstance(parsed_data, dict):
-        for k, v in parsed_data.items():
-            print(f"  {k}: {v}")
+# Retrieve and parse JSON
+profile_data = json.loads(storage.getItem('profile'))
+print(profile_data['name'])  # "Suraj Mandal"
 ```
 
-### Storage Backend Comparison
+### Configuration Management
 
 ```python
-from localStoragePy import localStoragePy
+from localStoragePro import localStoragePro
+
+config = localStoragePro('myapp.config')
+
+# Store app configuration
+config.setItem('db_host', 'localhost')
+config.setItem('db_port', '5432')
+config.setItem('debug_mode', 'true')
+config.setItem('log_level', 'INFO')
+
+# Load all config at startup
+app_config = config.getAll()
+print(f"Connecting to {app_config['db_host']}:{app_config['db_port']}")
+```
+
+### Performance Comparison
+
+```python
 import time
+from localStoragePro import localStoragePro
 
-# Test different backends
-backends = ['text', 'sqlite', 'json']
+storage = localStoragePro('performance_test')
 
-for backend in backends:
-    print(f"\n--- Testing {backend.upper()} Backend ---")
-    localStorage = localStoragePy(f'test.{backend}', backend)
-    
-    # Store test data
-    localStorage.setItem('name', 'Suraj Mandal')
-    localStorage.setItem('project', 'LocalStoragePro')
-    localStorage.setItem('language', 'Python')
-    
-    # Retrieve all data
-    all_data = localStorage.getAll()
-    print(f"Stored {len(all_data)} items: {list(all_data.keys())}")
-    
-    # Test getMany
-    subset = localStorage.getMany(['name', 'project'])
-    print(f"Retrieved subset: {subset}")
-    
-    # Clean up
-    localStorage.removeAll()
-    print(f"Cleaned up - remaining items: {len(localStorage.getAll())}")
+# Setup test data
+for i in range(100):
+    storage.setItem(f'item_{i}', f'value_{i}')
+
+keys_to_fetch = [f'item_{i}' for i in range(0, 100, 10)]
+
+# Individual fetches
+start = time.time()
+individual_results = {key: storage.getItem(key) for key in keys_to_fetch}
+individual_time = time.time() - start
+
+# Bulk fetch
+start = time.time() 
+bulk_results = storage.getMany(keys_to_fetch)
+bulk_time = time.time() - start
+
+print(f"Individual: {individual_time:.4f}s")
+print(f"Bulk: {bulk_time:.4f}s")
+print(f"Speedup: {individual_time/bulk_time:.1f}x faster")
 ```
 
-### Error Handling and Best Practices
+---
+
+## 🛡️ Error Handling
+
+localStoragePro gracefully handles common error scenarios:
 
 ```python
-from localStoragePy import localStoragePy
+from localStoragePro import localStoragePro
 
-try:
-    # Initialize with a valid namespace
-    localStorage = localStoragePy('com.surajmandal.myapp', 'sqlite')
-    
-    # Store some data
-    localStorage.setItem('config', 'some_config_value')
-    
-    # Always check if data exists before using it
-    config = localStorage.getItem('config')
-    if config is not None:
-        print(f"Config found: {config}")
-    else:
-        print("No config found, using defaults")
-    
-    # Use getMany for efficient bulk retrieval
-    required_keys = ['api_key', 'user_token', 'refresh_token']
-    tokens = localStorage.getMany(required_keys)
-    
-    missing_keys = set(required_keys) - set(tokens.keys())
-    if missing_keys:
-        print(f"Missing required keys: {missing_keys}")
-    else:
-        print("All required tokens found")
-        
-except Exception as e:
-    print(f"Storage error: {e}")
+storage = localStoragePro('error_handling_demo')
+
+# Getting non-existent keys returns None
+result = storage.getItem('does_not_exist')
+print(result)  # None
+
+# Getting many with mixed existing/non-existing keys
+result = storage.getMany(['exists', 'does_not_exist', 'also_exists'])
+print(result)  # Only returns existing keys
+
+# Removing non-existent keys doesn't raise errors
+storage.removeItem('does_not_exist')  # Safe operation
+
+# Multiple removeAll() calls are safe
+storage.removeAll()
+storage.removeAll()  # No error
 ```
 
-## Available Methods
+---
 
-### Core Methods
-- `getItem(key)` → `str | None`: Retrieve a single value by key. Returns `None` if key doesn't exist.
-- `setItem(key, value)` → `None`: Store a value with the given key. Value is converted to string.
-- `removeItem(key)` → `None`: Remove a single key-value pair.
-- `clear()` → `None`: Clear all stored data.
+## 🤝 Contributing
 
-### Bulk Operations
-- `getAll()` → `dict`: Retrieve all stored key-value pairs as a dictionary.
-- `getMany(keys)` → `dict`: Retrieve multiple values by providing a list of keys. Only returns existing keys.
-- `removeAll()` → `None`: Remove all stored data (equivalent to `clear()`).
+We welcome contributions! Here's how you can help:
 
-### Method Details
-
-#### `getItem(key: str) -> str | None`
-```python
-# Returns the value as a string, or None if not found
-value = localStorage.getItem('username')
-if value is not None:
-    print(f"Found: {value}")
-```
-
-#### `setItem(key: str, value: any) -> None`
-```python
-# All values are converted to strings before storage
-localStorage.setItem('count', 42)  # Stored as '42'
-localStorage.setItem('config', json.dumps({'theme': 'dark'}))  # Store complex data as JSON
-```
-
-#### `getAll() -> dict`
-```python
-# Returns all key-value pairs
-all_data = localStorage.getAll()
-print(f"Total items: {len(all_data)}")
-for key, value in all_data.items():
-    print(f"{key}: {value}")
-```
-
-#### `getMany(keys: list) -> dict`
-```python
-# Only returns keys that exist in storage
-requested = ['name', 'email', 'nonexistent']
-found = localStorage.getMany(requested)
-# found will only contain 'name' and 'email' if they exist
-```
-
-#### `removeAll()` vs `clear()`
-Both methods do the same thing - remove all stored data. Use whichever feels more natural:
-```python
-localStorage.removeAll()  # More explicit about removing items
-localStorage.clear()      # Familiar from web localStorage API
-```
-
-## Storage Backends
-
-LocalStoragePro supports multiple storage backends, each with different characteristics:
-
-### SQLite Backend (Default - Recommended)
-```python
-localStorage = localStoragePy('myapp', 'sqlite')
-```
-- **File**: Single `.db` file in the storage directory
-- **Performance**: Fast for all operations, especially bulk operations
-- **Durability**: ACID compliant, handles concurrent access well
-- **Use case**: Most applications, especially those requiring reliability
-
-### JSON Backend
-```python
-localStorage = localStoragePy('myapp', 'json')
-```
-- **File**: Single `.json` file in the storage directory
-- **Performance**: Good for small to medium datasets
-- **Durability**: Simple file-based storage, entire file rewritten on each change
-- **Use case**: Applications that need human-readable storage files
-
-### Text Backend
-```python
-localStorage = localStoragePy('myapp', 'text')
-```
-- **File**: Separate text file for each key
-- **Performance**: Slower for bulk operations, good for individual access
-- **Durability**: Each key is a separate file
-- **Use case**: Simple applications, debugging, or when you need individual file access
-
-### Storage Location
-All backends store data in: `~/.config/localStoragePy/<your-app-namespace>/`
-
-## When is this useful?
-
-- **Configuration Management**: Store app settings, user preferences, and configuration data
-- **Simple Data Persistence**: Lightweight alternative to setting up a full database
-- **Caching**: Store computed results, API responses, or temporary data
-- **User Preferences**: Remember user choices, themes, and personalization settings
-- **Development**: Quick prototyping without database setup
-- **Cross-platform Storage**: Consistent API across Windows, macOS, and Linux
-
-## Contributing
-
-This project is maintained by [Suraj Mandal](https://github.com/surajmandalcell). Contributions are welcome!
-
-### How to Contribute
-1. Fork the repository: https://github.com/surajmandalcell/LocalStoragePro
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and add tests
-4. Submit a pull request
+1. **🐛 Report Bugs** - [Open an issue](https://github.com/surajmandalcell/localStoragePro/issues)
+2. **💡 Suggest Features** - [Start a discussion](https://github.com/surajmandalcell/localStoragePro/discussions)
+3. **🔧 Submit PRs** - Fork, code, test, and submit!
 
 ### Development Setup
+
 ```bash
-git clone https://github.com/surajmandalcell/LocalStoragePro.git
-cd LocalStoragePro
-pip install -e .
+# Clone the repository
+git clone https://github.com/surajmandalcell/localStoragePro.git
+cd localStoragePro
+
+# Run tests
+python -m pytest tests/
+
+# Run examples
+python examples/example_demo.py
 ```
 
-### Reporting Issues
-Found a bug or have a feature request? Please open an issue on GitHub:
-https://github.com/surajmandalcell/LocalStoragePro/issues
+---
 
-## License
+## 📄 License
 
-MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Original concept inspired by Web localStorage API
+- Maintained by [Suraj Mandal](https://github.com/surajmandalcell)
+- Built with ❤️ for the Python community
+
+---
+
+<div align="center">
+
+**[⭐ Star this repo](https://github.com/surajmandalcell/localStoragePro)** if you find it useful!
+
+Made with ❤️ by [Suraj Mandal](https://github.com/surajmandalcell)
+
+</div>

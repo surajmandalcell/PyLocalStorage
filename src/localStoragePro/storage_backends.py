@@ -13,10 +13,10 @@ class localStoragePyStorageException(Exception):
 
 class BasicStorageBackend:
     def __init__(self, app_namespace: str) -> None:
-        # self.base_storage_path = os.path.join(pathlib.Path.home() , ".config", "localStoragePy")
+        # self.base_storage_path = os.path.join(pathlib.Path.home() , ".config", "LocalStoragePro")
         if app_namespace.count(os.sep) > 0:
             raise localStoragePyStorageException('app_namespace may not contain path separators!')
-        self.app_storage_path = os.path.join(pathlib.Path.home() , ".config", "localStoragePy", app_namespace)
+        self.app_storage_path = os.path.join(pathlib.Path.home() , ".config", "localStoragePro", app_namespace)
         if not os.path.isdir(self.app_storage_path):
             os.makedirs(os.path.join(self.app_storage_path))
 
@@ -117,11 +117,11 @@ class SQLiteStorageBackend(BasicStorageBackend):
             self.create_default_tables()
 
     def create_default_tables(self) -> None:
-        self.db_cursor.execute("CREATE TABLE localStoragePy (key TEXT PRIMARY KEY, value TEXT)")
+        self.db_cursor.execute("CREATE TABLE localStoragePro (key TEXT PRIMARY KEY, value TEXT)")
         self.db_connection.commit()
         
     def get_item(self, item: str) -> Optional[str]:
-        fetched_value = self.db_cursor.execute("SELECT value FROM localStoragePy WHERE key = ?", (item,)).fetchone()
+        fetched_value = self.db_cursor.execute("SELECT value FROM localStoragePro WHERE key = ?", (item,)).fetchone()
         if type(fetched_value) is tuple:
             return fetched_value[0]
         else:
@@ -129,7 +129,7 @@ class SQLiteStorageBackend(BasicStorageBackend):
 
     def get_all(self) -> Dict[str, str]:
         result = {}
-        fetched_values = self.db_cursor.execute("SELECT key, value FROM localStoragePy").fetchall()
+        fetched_values = self.db_cursor.execute("SELECT key, value FROM localStoragePro").fetchall()
         for key, value in fetched_values:
             result[key] = value
         return result
@@ -139,29 +139,29 @@ class SQLiteStorageBackend(BasicStorageBackend):
         placeholders = ", ".join(["?" for _ in items])
         if not items:
             return result
-        query = f"SELECT key, value FROM localStoragePy WHERE key IN ({placeholders})"
+        query = f"SELECT key, value FROM localStoragePro WHERE key IN ({placeholders})"
         fetched_values = self.db_cursor.execute(query, items).fetchall()
         for key, value in fetched_values:
             result[key] = value
         return result
 
     def set_item(self, item: str, value: Any) -> None:
-        if len(self.db_cursor.execute("SELECT key FROM localStoragePy WHERE key = ?", (item,)).fetchall()) == 0:
-            self.db_cursor.execute("INSERT INTO localStoragePy (key, value) VALUES (?, ?)", (item, str(value)))
+        if len(self.db_cursor.execute("SELECT key FROM localStoragePro WHERE key = ?", (item,)).fetchall()) == 0:
+            self.db_cursor.execute("INSERT INTO localStoragePro (key, value) VALUES (?, ?)", (item, str(value)))
         else:
-            self.db_cursor.execute("UPDATE localStoragePy SET value = ? WHERE key = ?", (str(value), item))
+            self.db_cursor.execute("UPDATE localStoragePro SET value = ? WHERE key = ?", (str(value), item))
         self.db_connection.commit()
 
     def remove_item(self, item: str) -> None:
-        self.db_cursor.execute("DELETE FROM localStoragePy WHERE key = ?", (item,))
+        self.db_cursor.execute("DELETE FROM localStoragePro WHERE key = ?", (item,))
         self.db_connection.commit()
 
     def remove_all(self) -> None:
-        self.db_cursor.execute("DELETE FROM localStoragePy")
+        self.db_cursor.execute("DELETE FROM localStoragePro")
         self.db_connection.commit()
 
     def clear(self) -> None:
-        self.db_cursor.execute("DROP TABLE localStoragePy")
+        self.db_cursor.execute("DROP TABLE localStoragePro")
         self.create_default_tables()
 
 
@@ -202,15 +202,12 @@ class JSONStorageBackend(BasicStorageBackend):
 
     def remove_item(self, item: str) -> None: 
         if item in self.json_data:
-            self.json_data.pop(item)
+            del self.json_data[item]
             self.commit_to_disk()
 
     def remove_all(self) -> None:
-        self.json_data = {}
-        self.commit_to_disk()
+        self.clear()
 
     def clear(self) -> None:
-        if os.path.isfile(self.json_path):
-            os.remove(self.json_path)
         self.json_data = {}
         self.commit_to_disk()

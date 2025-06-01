@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 """
-Test script for LocalStoragePro demonstrating all functionality.
+Test script for  demonstrating all functionality.
 This script tests all the methods including get_all, get_many, and remove_all.
 """
 
 import json
 import sys
-import os
 
-# Add the parent directory to the path so we can import localStoragePy
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from localStoragePy import localStoragePy
-import localStoragePy as lsp_module
+from  import LocalStoragePro
+import  as lsp_module
 
 def test_basic_operations():
     """Test basic localStorage operations."""
     print("=== Testing Basic Operations ===")
     
-    localStorage = localStoragePy('test.basic', 'json')
+    localStorage = LocalStoragePro('test.basic', 'json')
     
     # Clear any existing data
     localStorage.clear()
@@ -26,7 +22,7 @@ def test_basic_operations():
     # Test setItem and getItem
     localStorage.setItem('username', 'surajmandal')
     localStorage.setItem('email', 'contact@surajmandal.com')
-    localStorage.setItem('project', 'LocalStoragePro')
+    localStorage.setItem('project', '')
     
     print(f"Username: {localStorage.getItem('username')}")
     print(f"Email: {localStorage.getItem('email')}")
@@ -46,14 +42,14 @@ def test_bulk_operations():
     """Test bulk operations: getAll, getMany, removeAll."""
     print("=== Testing Bulk Operations ===")
     
-    localStorage = localStoragePy('test.bulk', 'sqlite')
+    localStorage = LocalStoragePro('test.bulk', 'sqlite')
     localStorage.clear()
     
     # Store test data
     test_data = {
         'name': 'Suraj Mandal',
         'github': 'https://github.com/surajmandalcell',
-        'project': 'LocalStoragePro',
+        'project': '',
         'language': 'Python',
         'version': '0.3.0'
     }
@@ -92,7 +88,7 @@ def test_json_storage():
     """Test storing and retrieving JSON data."""
     print("=== Testing JSON Data Storage ===")
     
-    localStorage = localStoragePy('test.json', 'json')
+    localStorage = LocalStoragePro('test.json', 'json')
     localStorage.clear()
     
     # Store complex data as JSON
@@ -100,7 +96,7 @@ def test_json_storage():
         'name': 'Suraj Mandal',
         'email': 'contact@surajmandal.com',
         'github': 'https://github.com/surajmandalcell',
-        'projects': ['LocalStoragePro', 'Other Projects'],
+        'projects': ['', 'Other Projects'],
         'skills': ['Python', 'JavaScript', 'Git']
     }
     
@@ -140,7 +136,7 @@ def test_all_backends():
     
     for backend in backends:
         print(f"\n--- Testing {backend.upper()} Backend ---")
-        localStorage = localStoragePy(f'test.{backend}', backend)
+        localStorage = LocalStoragePro(f'test.{backend}', backend)
         localStorage.clear()
         
         # Store test data
@@ -167,7 +163,7 @@ def test_error_handling():
     """Test error handling and edge cases."""
     print("=== Testing Error Handling ===")
     
-    localStorage = localStoragePy('test.errors', 'sqlite')
+    localStorage = LocalStoragePro('test.errors', 'sqlite')
     localStorage.clear()
     
     # Test empty getMany
@@ -195,7 +191,7 @@ def test_error_handling():
 
 def main():
     """Run all tests."""
-    print("LocalStoragePro Test Suite")
+    print(" Test Suite")
     print("=" * 50)
     print(f"Testing version: {lsp_module.__version__}")
     print(f"Author: {lsp_module.__author__}")

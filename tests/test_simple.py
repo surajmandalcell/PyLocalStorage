@@ -1,32 +1,28 @@
 #!/usr/bin/env python3
 """
-Test script for LocalStoragePro demonstrating all functionality.
+Test script for localStoragePro demonstrating all functionality.
 This script tests all the methods including get_all, get_many, and remove_all.
 """
 
 import json
 import sys
-import os
 
-# Add the parent directory to the path so we can import localStoragePy
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from localStoragePy import localStoragePy
-import localStoragePy as lsp_module
+from localStoragePro import localStoragePro
+import localStoragePro as lsp_module
 
 def test_basic_operations():
     """Test basic localStorage operations."""
     print("=== Testing Basic Operations ===")
     
-    localStorage = localStoragePy('test.basic', 'json')
+    localStorage = localStoragePro('test.basic', 'json')
     
     # Clear any existing data
     localStorage.clear()
     
     # Test setItem and getItem
     localStorage.setItem('username', 'surajmandal')
-    localStorage.setItem('email', 'contact@surajmandal.com')
-    localStorage.setItem('project', 'LocalStoragePro')
+    localStorage.setItem('email', 'localstoragepro.oss@mandalsuraj.com')
+    localStorage.setItem('project', 'localStoragePro')
     
     print(f"Username: {localStorage.getItem('username')}")
     print(f"Email: {localStorage.getItem('email')}")
@@ -46,14 +42,14 @@ def test_bulk_operations():
     """Test bulk operations: getAll, getMany, removeAll."""
     print("=== Testing Bulk Operations ===")
     
-    localStorage = localStoragePy('test.bulk', 'sqlite')
+    localStorage = localStoragePro('test.bulk', 'sqlite')
     localStorage.clear()
     
     # Store test data
     test_data = {
         'name': 'Suraj Mandal',
         'github': 'https://github.com/surajmandalcell',
-        'project': 'LocalStoragePro',
+        'project': 'localStoragePro',
         'language': 'Python',
         'version': '0.3.0'
     }
@@ -90,7 +86,7 @@ def test_bulk_operations():
 
 def main():
     """Run all tests."""
-    print("LocalStoragePro Test Suite")
+    print("localStoragePro Test Suite")
     print("=" * 50)
     print(f"Testing version: {lsp_module.__version__}")
     print(f"Author: {lsp_module.__author__}")
@@ -101,7 +97,7 @@ def main():
         test_bulk_operations()
         
         print("🎉 All tests passed successfully!")
-        print("\nLocalStoragePro is ready for use with all the new functionality:")
+        print("\nlocalStoragePro is ready for use with all the new functionality:")
         print("  ✓ getAll() - Get all key-value pairs")
         print("  ✓ getMany(keys) - Get multiple values efficiently")
         print("  ✓ removeAll() - Remove all stored data")

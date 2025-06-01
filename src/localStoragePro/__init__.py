@@ -6,9 +6,9 @@ __version__ = '0.3.0'
 from typing import Any
 from .storage_backends import BasicStorageBackend, TextStorageBackend, SQLiteStorageBackend, JSONStorageBackend
 
-__all__ = ['localStoragePy']
+__all__ = ['localStoragePro']
 
-class localStoragePy:
+class localStoragePro:
     """
     A familiar API from the Web, adapted to storing data locally with Python.
     
@@ -22,13 +22,13 @@ class localStoragePy:
     
     Examples:
         Basic usage:
-        >>> localStorage = localStoragePy('com.example.myapp')
+        >>> localStorage = localStoragePro('com.example.myapp')
         >>> localStorage.setItem('username', 'john_doe')
         >>> localStorage.getItem('username')
         'john_doe'
         
         Using different backend:
-        >>> localStorage = localStoragePy('com.example.myapp', 'json')
+        >>> localStorage = localStoragePro('com.example.myapp', 'json')
         
         Bulk operations:
         >>> localStorage.setItem('name', 'John')
@@ -41,7 +41,7 @@ class localStoragePy:
     
     def __init__(self, app_namespace: str, storage_backend: str = "sqlite") -> None:
         """
-        Initialize localStoragePy with the specified namespace and backend.
+        Initialize localStoragePro with the specified namespace and backend.
         
         Args:
             app_namespace (str): Unique namespace for your application
