@@ -1,15 +1,17 @@
-# localStoragePro
-
 <div align="center">
 
-![PyPI](https://img.shields.io/pypi/v/localStoragePro.svg?style=for-the-badge&logo=pypi&logoColor=white)
-![Python](https://img.shields.io/pypi/pyversions/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
-![License](https://img.shields.io/pypi/l/localStoragePro.svg?style=for-the-badge)
-![Downloads](https://img.shields.io/pypi/dm/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
+# localStoragePro
 
 **A familiar localStorage API from the Web, adapted for Python applications**
 
 *Simple, fast, and reliable local data storage with multiple backend options*
+
+<br />
+
+![PyPI](https://img.shields.io/pypi/v/localStoragePro.svg?style=for-the-badge&logo=pypi&logoColor=white)
+![License](https://img.shields.io/pypi/l/localStoragePro.svg?style=for-the-badge)
+![Downloads](https://img.shields.io/pypi/dm/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
+![Python](https://img.shields.io/pypi/pyversions/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
 
 </div>
 
@@ -358,11 +360,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built for the Python community
 
 ---
-
+<br>
 <div align="center">
-
+  
 **[Star this repo](https://github.com/surajmandalcell/localStoragePro)** if you find it useful!
 
-Made by [Suraj Mandal](https://github.com/surajmandalcell)
+Shamelessly VibeCoded by [Suraj Mandal](https://github.com/surajmandalcell)
 
 </div>
