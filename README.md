@@ -8,10 +8,10 @@
 
 <br />
 
-![PyPI](https://img.shields.io/pypi/v/localStoragePro.svg?style=for-the-badge&logo=pypi&logoColor=white)
-![License](https://img.shields.io/pypi/l/localStoragePro.svg?style=for-the-badge)
-![Downloads](https://img.shields.io/pypi/dm/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
-![Python](https://img.shields.io/pypi/pyversions/localStoragePro.svg?style=for-the-badge&logo=python&logoColor=white)
+![PyPI](https://img.shields.io/pypi/v/localStoragePro.svg)
+![License](https://img.shields.io/pypi/l/localStoragePro.svg)
+![Downloads](https://img.shields.io/pypi/dm/localStoragePro.svg)
+![Python](https://img.shields.io/pypi/pyversions/localStoragePro.svg)
 
 </div>
 
