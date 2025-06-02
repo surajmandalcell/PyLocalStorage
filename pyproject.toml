@@ -8,6 +8,7 @@ version = "0.3.0"
 description = "A familiar API from the Web, adapted to storing data locally with Python."
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Suraj Mandal", email = "localstoragepro.oss@mandalsuraj.com" },
 ]
